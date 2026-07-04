@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}体重趋势图{% endblock %}
+
+{% block head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+<h3 class="mb-3">体重趋势图</h3>
+<div class="section-actions">
+    <a class="btn btn-outline-secondary" href="{{ url_for('student_dashboard') }}">返回学生主页</a>
+    <a class="btn btn-warning" href="{{ url_for('add_body_record') }}">添加身体指标</a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <p class="text-muted">当前用户：{{ user.username }}</p>
+        {% if dates and weights %}
+            <canvas id="weightChart" height="120"></canvas>
+        {% else %}
+            <div class="alert alert-info mb-0">暂时还没有身体指标数据，无法生成体重趋势图。</div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% if dates and weights %}
+<script>
+    const labels = {{ dates | tojson }};
+    const data = {{ weights | tojson }};
+
+    const ctx = document.getElementById('weightChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: '体重（kg）',
+                data: data,
+                fill: false,
+                borderColor: '#2563eb',
+                backgroundColor: '#2563eb',
+                tension: 0.25
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: false
+                }
+            }
+        }
+    });
+</script>
+{% endif %}
+{% endblock %}

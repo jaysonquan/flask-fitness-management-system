@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}管理员登录{% endblock %}
+
+{% block content %}
+<div class="form-card">
+    <div class="card shadow-sm">
+        <div class="card-body p-4">
+            <h3 class="text-center mb-4">管理员登录</h3>
+            <form method="post">
+                <div class="mb-3">
+                    <label class="form-label">管理员账号</label>
+                    <input class="form-control" type="text" name="username" placeholder="请输入管理员账号" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">密码</label>
+                    <input class="form-control" type="password" name="password" placeholder="请输入密码" required>
+                </div>
+                <button class="btn btn-dark w-100" type="submit">登录后台</button>
+            </form>
+            <div class="alert alert-info mt-3 mb-0">
+                默认账号：admin，密码：123456
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

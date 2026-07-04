@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}我的健身计划{% endblock %}
+
+{% block content %}
+<h3 class="mb-3">我的健身计划</h3>
+<div class="section-actions">
+    <a class="btn btn-primary" href="{{ url_for('add_workout_plan') }}">添加新计划</a>
+    <a class="btn btn-outline-secondary" href="{{ url_for('student_dashboard') }}">返回学生主页</a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <p class="text-muted">当前用户：{{ user.username }}</p>
+        <table class="table table-bordered table-hover bg-white">
+            <thead class="table-light">
+                <tr>
+                    <th>计划名称</th>
+                    <th>健身目标</th>
+                    <th>适用水平</th>
+                    <th>每周训练次数</th>
+                    <th>计划内容</th>
+                    <th>备注</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for plan in plans %}
+                <tr>
+                    <td>{{ plan.plan_name }}</td>
+                    <td>{{ plan.goal_type or '' }}</td>
+                    <td>{{ plan.level_type or '' }}</td>
+                    <td>{{ plan.weekly_frequency or '' }}</td>
+                    <td>{{ plan.content or '' }}</td>
+                    <td>{{ plan.remarks or '' }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6" class="text-center text-muted">暂时还没有健身计划</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

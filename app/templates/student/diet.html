@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}饮食记录{% endblock %}
+
+{% block content %}
+<h3 class="mb-3">饮食记录</h3>
+<div class="section-actions">
+    <a class="btn btn-success" href="{{ url_for('add_diet_record') }}">新增饮食记录</a>
+    <a class="btn btn-warning" href="{{ url_for('image_diet_recognition') }}">图片识别饮食记录</a>
+    <a class="btn btn-outline-secondary" href="{{ url_for('student_dashboard') }}">返回学生主页</a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <p class="text-muted">当前用户：{{ user.username }}</p>
+        <table class="table table-bordered table-hover bg-white">
+            <thead class="table-light">
+                <tr>
+                    <th>饮食日期</th>
+                    <th>食物名称</th>
+                    <th>数量 g</th>
+                    <th>总热量</th>
+                    <th>餐次</th>
+                    <th>备注</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in records %}
+                <tr>
+                    <td>{{ record.record_date }}</td>
+                    <td>{{ record.food_name }}</td>
+                    <td>{{ record.quantity or '' }}</td>
+                    <td>{{ record.total_calories or '' }}</td>
+                    <td>{{ record.meal_type or '' }}</td>
+                    <td>{{ record.remarks or '' }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6" class="text-center text-muted">暂无饮食记录</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

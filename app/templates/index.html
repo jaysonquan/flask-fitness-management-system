@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}校园健身饮食辅助管理系统{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-9">
+        <div class="card shadow-sm">
+            <div class="card-body p-5 text-center">
+                <h1 class="mb-3">面向大学生的健身与饮食辅助管理信息系统</h1>
+                <p class="text-muted mb-4">
+                    集训练记录、饮食热量、身体指标、机器学习分析和图片识别饮食记录于一体。
+                </p>
+                <div class="d-flex flex-wrap justify-content-center gap-2">
+                    <a class="btn btn-success" href="{{ url_for('student_register') }}">学生注册</a>
+                    <a class="btn btn-primary" href="{{ url_for('student_login') }}">学生登录</a>
+                    <a class="btn btn-dark" href="{{ url_for('admin_login') }}">管理员登录</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

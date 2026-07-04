@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}训练记录{% endblock %}
+
+{% block content %}
+<h3 class="mb-3">训练记录</h3>
+<div class="section-actions">
+    <a class="btn btn-primary" href="{{ url_for('add_workout_record') }}">添加训练记录</a>
+    <a class="btn btn-outline-secondary" href="{{ url_for('student_dashboard') }}">返回学生主页</a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <p class="text-muted">当前用户：{{ user.username }}</p>
+        <table class="table table-bordered table-hover bg-white">
+            <thead class="table-light">
+                <tr>
+                    <th>训练日期</th>
+                    <th>训练项目</th>
+                    <th>时长</th>
+                    <th>完成情况</th>
+                    <th>消耗热量</th>
+                    <th>备注</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in records %}
+                <tr>
+                    <td>{{ record.workout_date }}</td>
+                    <td>{{ record.workout_item }}</td>
+                    <td>{{ record.duration_minutes or '' }}</td>
+                    <td>{{ record.completion_status or '' }}</td>
+                    <td>{{ record.calories_burned or '' }}</td>
+                    <td>{{ record.remarks or '' }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6" class="text-center text-muted">暂无训练记录</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

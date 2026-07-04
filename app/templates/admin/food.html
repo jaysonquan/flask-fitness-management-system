@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}食物库管理{% endblock %}
+
+{% block content %}
+<h3 class="mb-3">食物库管理</h3>
+<div class="section-actions">
+    <a class="btn btn-success" href="{{ url_for('add_food') }}">新增食物</a>
+    <a class="btn btn-outline-secondary" href="{{ url_for('admin_dashboard') }}">返回管理员主页</a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <table class="table table-bordered table-hover bg-white">
+            <thead class="table-light">
+                <tr>
+                    <th>ID</th>
+                    <th>食物名称</th>
+                    <th>类别</th>
+                    <th>热量</th>
+                    <th>蛋白质</th>
+                    <th>碳水</th>
+                    <th>脂肪</th>
+                    <th>备注</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for food in foods %}
+                <tr>
+                    <td>{{ food.id }}</td>
+                    <td>{{ food.food_name }}</td>
+                    <td>{{ food.category or '' }}</td>
+                    <td>{{ food.calories or '' }}</td>
+                    <td>{{ food.protein or '' }}</td>
+                    <td>{{ food.carbohydrate or '' }}</td>
+                    <td>{{ food.fat or '' }}</td>
+                    <td>{{ food.remarks or '' }}</td>
+                    <td>
+                        <a class="btn btn-sm btn-danger" href="{{ url_for('delete_food', food_id=food.id) }}" onclick="return confirm('确定删除吗？')">删除</a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="9" class="text-center text-muted">当前还没有食物数据</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

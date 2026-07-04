@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}智能健身饮食推荐{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">智能健身饮食推荐</h2>
+
+<div class="row">
+    <div class="col-lg-4">
+        <div class="card shadow-sm mb-4">
+            <div class="card-body text-center">
+                <h5 class="text-muted">机器学习分析结果</h5>
+                <h1 class="display-5">{{ ml_analysis.profile.confidence }}%</h1>
+                <h4 class="mt-2">用户状态分类：{{ ml_analysis.profile.label }}</h4>
+                <p class="text-muted mb-1">算法：{{ ml_analysis.algorithm }}</p>
+                <p class="text-muted mb-0">训练样本数：{{ ml_analysis.training_sample_count }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h4 class="mb-3">饮食风险分析</h4>
+                <h5>{{ ml_analysis.diet_risk.level }}</h5>
+                <div class="mb-3">
+                    {% for label in ml_analysis.diet_risk.labels %}
+                        <span class="badge bg-warning text-dark me-1">{{ label }}</span>
+                    {% endfor %}
+                </div>
+                <ul class="data-list">
+                    {% for reason in ml_analysis.diet_risk.reasons %}
+                        <li>{{ reason }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h4 class="mb-3">训练效果趋势预测</h4>
+                <h5>{{ ml_analysis.training_trend.label }}</h5>
+                <p class="text-muted">置信度：{{ ml_analysis.training_trend.confidence }}%</p>
+                <ul class="data-list">
+                    {% for reason in ml_analysis.training_trend.reasons %}
+                        <li>{{ reason }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-5">
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h4 class="mb-3">模型特征</h4>
+                <ul class="data-list">
+                    {% for name, value in ml_analysis.feature_summary.items() %}
+                        <li>{{ name }}：{{ value }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-7">
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h4 class="mb-3">综合模型建议</h4>
+                <div class="list-group">
+                    {% for item in ml_analysis.suggestions %}
+                        <div class="list-group-item">{{ loop.index }}. {{ item }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h4 class="mb-3">推荐依据</h4>
+                <ul class="data-list">
+                    <li>健身目标：{{ recommendations.goal }}</li>
+                    <li>运动基础：{{ recommendations.level }}</li>
+                    <li>推荐训练频率：{{ recommendations.weekly_frequency }}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h4 class="mb-3">训练建议</h4>
+                <ul class="data-list">
+                    {% for item in recommendations.training_focus %}
+                        <li>{{ item }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <h4 class="mb-3">饮食建议</h4>
+        <ul class="data-list">
+            {% for item in recommendations.diet_focus %}
+                <li>{{ item }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<div class="section-actions">
+    <a class="btn btn-primary" href="{{ url_for('student_dashboard') }}">返回学生主页</a>
+    <a class="btn btn-success" href="{{ url_for('image_diet_recognition') }}">图片识别饮食</a>
+    <a class="btn btn-outline-secondary" href="{{ url_for('student_chart') }}">查看趋势图</a>
+</div>
+{% endblock %}

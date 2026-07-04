@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}身体指标{% endblock %}
+
+{% block content %}
+<h3 class="mb-3">身体指标</h3>
+<div class="section-actions">
+    <a class="btn btn-warning" href="{{ url_for('add_body_record') }}">添加身体指标</a>
+    <a class="btn btn-outline-secondary" href="{{ url_for('student_dashboard') }}">返回学生主页</a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <p class="text-muted">当前用户：{{ user.username }}</p>
+        <table class="table table-bordered table-hover bg-white">
+            <thead class="table-light">
+                <tr>
+                    <th>记录日期</th>
+                    <th>体重</th>
+                    <th>BMI</th>
+                    <th>腰围</th>
+                    <th>臀围</th>
+                    <th>备注</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in records %}
+                <tr>
+                    <td>{{ record.record_date }}</td>
+                    <td>{{ record.weight }}</td>
+                    <td>{{ record.bmi or '' }}</td>
+                    <td>{{ record.waist or '' }}</td>
+                    <td>{{ record.hip or '' }}</td>
+                    <td>{{ record.remarks or '' }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6" class="text-center text-muted">暂无身体指标记录</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

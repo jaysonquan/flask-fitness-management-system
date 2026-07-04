@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}校园健身饮食辅助管理系统{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+        <div class="container-fluid px-4">
+            <a class="navbar-brand" href="{{ url_for('index') }}">健身管理系统</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNavbar">
+                <div class="navbar-nav ms-auto gap-2">
+                    {% if session.get('student_id') %}
+                        <a class="btn btn-outline-light btn-sm" href="{{ url_for('student_dashboard') }}">学生主页</a>
+                        <a class="btn btn-outline-light btn-sm" href="{{ url_for('edit_profile') }}">个人资料</a>
+                        <a class="btn btn-outline-light btn-sm" href="{{ url_for('workout_records') }}">训练记录</a>
+                        <a class="btn btn-outline-light btn-sm" href="{{ url_for('diet_records') }}">饮食记录</a>
+                        <a class="btn btn-success btn-sm" href="{{ url_for('image_diet_recognition') }}">图片识别饮食</a>
+                        <a class="btn btn-outline-light btn-sm" href="{{ url_for('body_records') }}">身体指标</a>
+                        <a class="btn btn-outline-light btn-sm" href="{{ url_for('workout_plans') }}">健身计划</a>
+                        <a class="btn btn-warning btn-sm" href="{{ url_for('ai_recommend') }}">智能推荐</a>
+                        <a class="btn btn-info btn-sm" href="{{ url_for('student_chart') }}">趋势图</a>
+                        <a class="btn btn-danger btn-sm" href="{{ url_for('logout') }}">退出</a>
+                    {% elif session.get('admin_id') %}
+                        <a class="btn btn-outline-light btn-sm" href="{{ url_for('admin_dashboard') }}">后台首页</a>
+                        <a class="btn btn-outline-light btn-sm" href="{{ url_for('foods') }}">食物库</a>
+                        <a class="btn btn-danger btn-sm" href="{{ url_for('logout') }}">退出后台</a>
+                    {% else %}
+                        <a class="btn btn-outline-light btn-sm" href="{{ url_for('student_login') }}">学生登录</a>
+                        <a class="btn btn-outline-light btn-sm" href="{{ url_for('student_register') }}">学生注册</a>
+                        <a class="btn btn-warning btn-sm" href="{{ url_for('admin_login') }}">管理员登录</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container page-shell">
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-warning shadow-sm">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

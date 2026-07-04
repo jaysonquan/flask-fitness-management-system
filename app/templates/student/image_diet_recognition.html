@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}图片识别饮食记录{% endblock %}
+
+{% block content %}
+<h3 class="mb-3">图片识别饮食记录</h3>
+
+{% if vision_notice %}
+    <div class="alert alert-warning shadow-sm">{{ vision_notice }}</div>
+{% endif %}
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body p-4">
+        <h4 class="mb-3">上传餐食图片</h4>
+        <form method="post" enctype="multipart/form-data">
+            <input type="hidden" name="action" value="recognize">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">饮食日期</label>
+                    <input class="form-control" type="date" name="record_date" value="{{ record_date }}" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">餐次</label>
+                    <select class="form-control" name="meal_type">
+                        <option value="">请选择</option>
+                        <option value="早餐" {% if meal_type == '早餐' %}selected{% endif %}>早餐</option>
+                        <option value="午餐" {% if meal_type == '午餐' %}selected{% endif %}>午餐</option>
+                        <option value="晚餐" {% if meal_type == '晚餐' %}selected{% endif %}>晚餐</option>
+                        <option value="加餐" {% if meal_type == '加餐' %}selected{% endif %}>加餐</option>
+                    </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">餐食图片</label>
+                    <input class="form-control" type="file" name="meal_image" accept="image/*" required>
+                </div>
+            </div>
+            <button class="btn btn-warning" type="submit">开始识别</button>
+            <a class="btn btn-outline-secondary ms-2" href="{{ url_for('diet_records') }}">返回饮食记录</a>
+        </form>
+    </div>
+</div>
+
+{% if recognized_items %}
+    <div class="card shadow-sm">
+        <div class="card-body p-4">
+            <h4 class="mb-2">图片识别结果</h4>
+            {% if recognition_result %}
+                <div class="alert {% if recognition_result.status == 'success' %}alert-success{% else %}alert-warning{% endif %} shadow-sm">
+                    <strong>{{ recognition_result.mode }}</strong>：{{ recognition_result.message }}
+                </div>
+            {% endif %}
+            <p class="text-muted">
+                以下克数为系统估算值，请确认或修改后再保存。若配置了视觉 API，会优先使用真实 AI 图片识别；未配置或识别失败时会使用演示回退。
+            </p>
+            <form method="post">
+                <input type="hidden" name="action" value="save">
+                <input type="hidden" name="record_date" value="{{ record_date }}">
+                <input type="hidden" name="meal_type" value="{{ meal_type }}">
+
+                <table class="table table-bordered table-hover bg-white">
+                    <thead class="table-light">
+                        <tr>
+                            <th>食物</th>
+                            <th>估算克数</th>
+                            <th>每100g热量</th>
+                            <th>估算热量</th>
+                            <th>置信度</th>
+                            <th>识别方式</th>
+                            <th>来源</th>
+                            <th>判断理由</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in recognized_items %}
+                        <tr>
+                            <td>
+                                {{ item.food_name }}
+                                <input type="hidden" name="food_name" value="{{ item.food_name }}">
+                                <input type="hidden" name="recognition_source" value="{{ item.recognition_source }}">
+                                <input type="hidden" name="reason" value="{{ item.reason }}">
+                            </td>
+                            <td>
+                                <input class="form-control" type="number" step="0.1" name="quantity" value="{{ item.estimated_grams }}">
+                            </td>
+                            <td>
+                                <input class="form-control" type="number" step="0.1" name="calories_per_100g" value="{{ item.calories_per_100g }}">
+                            </td>
+                            <td>{{ item.estimated_calories }}</td>
+                            <td>{{ item.confidence }}</td>
+                            <td>{{ item.recognition_source }}</td>
+                            <td>{{ item.source }}</td>
+                            <td>{{ item.reason }}</td>
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                            <td>
+                                <input class="form-control" type="text" name="food_name" placeholder="手动补充食物">
+                                <input type="hidden" name="recognition_source" value="手动补充">
+                                <input type="hidden" name="reason" value="用户手动补充">
+                            </td>
+                            <td><input class="form-control" type="number" step="0.1" name="quantity" placeholder="克数"></td>
+                            <td><input class="form-control" type="number" step="0.1" name="calories_per_100g" placeholder="kcal/100g"></td>
+                            <td>自动计算</td>
+                            <td>用户确认</td>
+                            <td>手动补充</td>
+                            <td>用户填写</td>
+                            <td>用于补充 AI 漏识别食物</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <button class="btn btn-success" type="submit">确认并保存饮食记录</button>
+            </form>
+        </div>
+    </div>
+{% endif %}
+{% endblock %}

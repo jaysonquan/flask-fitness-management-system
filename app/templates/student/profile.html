@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}编辑个人资料{% endblock %}
+
+{% block content %}
+<div class="wide-card">
+    <div class="card shadow-sm">
+        <div class="card-body p-4">
+            <h3 class="mb-4">编辑个人资料</h3>
+            <form method="post">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">真实姓名</label>
+                        <input class="form-control" type="text" name="real_name" value="{{ user.real_name or '' }}">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">性别</label>
+                        <select class="form-control" name="gender">
+                            <option value="">请选择</option>
+                            <option value="男" {% if user.gender == '男' %}selected{% endif %}>男</option>
+                            <option value="女" {% if user.gender == '女' %}selected{% endif %}>女</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">年龄</label>
+                        <input class="form-control" type="number" name="age" value="{{ user.age or '' }}">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">身高 cm</label>
+                        <input class="form-control" type="number" step="0.1" name="height" value="{{ user.height or '' }}">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">体重 kg</label>
+                        <input class="form-control" type="number" step="0.1" name="weight" value="{{ user.weight or '' }}">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">运动基础</label>
+                        <select class="form-control" name="fitness_level">
+                            <option value="">请选择</option>
+                            <option value="新手" {% if user.fitness_level == '新手' %}selected{% endif %}>新手</option>
+                            <option value="一般" {% if user.fitness_level == '一般' %}selected{% endif %}>一般</option>
+                            <option value="有经验" {% if user.fitness_level == '有经验' %}selected{% endif %}>有经验</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">每周训练天数</label>
+                        <input class="form-control" type="number" name="weekly_days" min="0" max="7" value="{{ user.weekly_days or '' }}">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">健身目标</label>
+                        <select class="form-control" name="goal_type">
+                            <option value="">请选择</option>
+                            <option value="减脂" {% if user.goal_type == '减脂' %}selected{% endif %}>减脂</option>
+                            <option value="增肌" {% if user.goal_type == '增肌' %}selected{% endif %}>增肌</option>
+                            <option value="保持体态" {% if user.goal_type == '保持体态' %}selected{% endif %}>保持体态</option>
+                            <option value="提升体能" {% if user.goal_type == '提升体能' %}selected{% endif %}>提升体能</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="btn btn-primary" type="submit">保存资料</button>
+                <a class="btn btn-outline-secondary ms-2" href="{{ url_for('student_dashboard') }}">返回学生主页</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
