@@ -156,3 +156,7 @@ Suggested screenshots:
 - Improve image recognition with a production vision model
 - Add more charts for training and nutrition trends
 - Add deployment configuration for Docker or cloud hosting
+
+## Development Workflow
+
+This project is managed with Git and GitHub. New features are developed on separate branches, committed with clear messages, and merged into the main branch through pull requests.
